@@ -1,0 +1,90 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+credentials:
+  system:
+      domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: "github-token"
+              username: ${GITHUB_USERNAME}
+              password: ${GITHUB_TOKEN}
+              description: "Github personal token"
+jobs:
+  - script: >
+        multibranchPipelineJob('0-bootstrap') {
+            factory {
+            workflowBranchProjectFactory {
+                scriptPath('landing-zone-pipelines/Jenkinsfile')
+            }
+            }
+            branchSources {
+            github {
+                id('12312313')
+                scanCredentialsId('github-token')
+                repoOwner("${GITHUB_USERNAME}")
+                repository("${GITHUB_REPO}")
+                buildOriginBranch(true)
+                buildOriginPRMerge(true)
+                includes("dev")
+            }
+            }
+            orphanedItemStrategy {
+            discardOldItems {
+                numToKeep(10)
+            }
+            }
+        }
+  - script: >
+        multibranchPipelineJob('1-org') {
+            factory {
+            workflowBranchProjectFactory {
+                scriptPath('landing-zone-pipelines/Jenkinsfile')
+            }
+            }
+            branchSources {
+            github {
+                id('12312313')
+                scanCredentialsId('github-token')
+                repoOwner("${GITHUB_USERNAME}")
+                repository("${GITHUB_REPO}")
+                buildOriginBranch(true)
+                buildOriginPRMerge(true)
+                includes("dev")
+            }
+            }
+            orphanedItemStrategy {
+            discardOldItems {
+                numToKeep(10)
+            }
+            }
+        }
+  - script: >
+        multibranchPipelineJob('2-environments') {
+            factory {
+            workflowBranchProjectFactory {
+                scriptPath('landing-zone-pipelines/Jenkinsfile')
+            }
+            }
+            branchSources {
+            github {
+                id('12312313')
+                scanCredentialsId('github-token')
+                repoOwner("${GITHUB_USERNAME}")
+                repository("${GITHUB_REPO}")
+                buildOriginBranch(true)
+                buildOriginPRMerge(true)
+                includes("dev")
+            }
+            }
+            orphanedItemStrategy {
+            discardOldItems {
+                numToKeep(10)
+            }
+            }
+        }
