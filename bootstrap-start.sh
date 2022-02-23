@@ -14,9 +14,9 @@ go get "golang.org/x/oauth2"
 go build
 
 #Run Go server
-cd ~/lz-bootsrap/lz-frontend-backend && backend/backend &
+cd ~/lz-bootstrap/lz-frontend-backend && backend/backend &
 
-cd ~/lz-bootsrap/
+cd ~/lz-bootstrap/
 
 #Install Docker
 #sudo curl -fsSL https://get.docker.io | sh 
@@ -31,5 +31,5 @@ sudo chmod +x /bin/start-jenkins.sh
 sudo chmod +x /bin/stop-jenkins.sh
 sudo systemctl enable jenkins
 
-#Adding bootstrap to group docker
-sudo usermod -a -G docker bootstrap
+#Adding user to group docker
+#sudo usermod -a -G docker <username>
